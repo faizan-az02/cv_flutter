@@ -1,16 +1,81 @@
-# cv_flutter
+# Flutter + Flask Demo App
 
-A new Flutter project.
+A simple demo application showcasing how to integrate a Flutter frontend with a Flask backend. The app demonstrates basic API communication between a mobile app and a local web server.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Flutter Frontend**: Clean Material Design UI with state management
+- **Flask Backend**: Simple REST API with CORS support
+- **Cross-Platform**: Works on Android, iOS, web, and desktop
+- **Network Communication**: Real HTTP requests between frontend and backend
+- **Error Handling**: Graceful handling of network errors and loading states
 
-A few resources to get you started if this is your first Flutter project:
+## Running the Application
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Step 1: Start the Flask Backend
+```bash
+cd backend
+python app.py
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You should see output like:
+```
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.9:5000
+```
+
+### Step 2: Run the Flutter App
+```bash
+flutter run
+```
+
+## Configuration
+
+### Network Configuration
+
+The app automatically detects the platform and uses the appropriate IP address:
+
+- **Android Emulator**: `10.0.2.2:5000`
+- **Physical Android Device**: `192.168.100.9:5000` (your computer's IP)
+- **iOS Simulator**: `127.0.0.1:5000`
+- **Web/Desktop**: `127.0.0.1:5000`
+
+### Finding Your Computer's IP Address
+
+For physical device testing, you need to know your computer's IP address:
+
+**Windows:**
+```bash
+ipconfig
+```
+Look for your Wi-Fi adapter's IPv4 address.
+
+
+## API Endpoints
+
+### GET /api/hello
+Returns a simple greeting message.
+
+## Code Explanation
+
+### Flask Backend (`backend/app.py`)
+- Uses Flask-CORS for cross-origin requests
+- `host='0.0.0.0'` allows external connections
+- Simple JSON API endpoint
+
+### Flutter API Service (`lib/services/api_service.dart`)
+- Handles HTTP requests to Flask backend
+- Platform-specific IP address selection
+- Error handling for network requests
+
+### Flutter UI (`lib/main.dart`)
+- Stateful widget with loading states
+- Async/await for non-blocking API calls
+- Error handling and user feedback
+
+## History:
+
+### Initial Commit:
+- Simple Flutter Page
+- Flask API - Sending a json format message upon pressing the button, displaying it on screen. 

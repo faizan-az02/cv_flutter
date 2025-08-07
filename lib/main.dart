@@ -28,16 +28,13 @@ class _HelloFromBackendState extends State<HelloFromBackend> {
       final msg = await _apiService.fetchHello();
       setState(() {
         _message = msg;
+        _loading = false;
       });
     } catch (e) {
       setState(() {
         _message = 'Error:  ${e.toString()}';
       });
-    } finally {
-      setState(() {
-        _loading = false;
-      });
-    }
+    } 
   }
 
   @override
