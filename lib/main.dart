@@ -3,59 +3,41 @@ import 'services/api_service.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: HelloFromBackend(),
+    home: DataBackend(),
   ));
 }
 
-class HelloFromBackend extends StatefulWidget {
-  const HelloFromBackend({Key? key}) : super(key: key);
+class DataBackend extends StatefulWidget {
+  const DataBackend({super.key});
 
   @override
-  State<HelloFromBackend> createState() => _HelloFromBackendState();
+  State<DataBackend> createState() => _DataBackendState();
 }
 
-class _HelloFromBackendState extends State<HelloFromBackend> {
-  String _message = '';
-  bool _loading = false;
-  final ApiService _apiService = ApiService();
+class _DataBackendState extends State<DataBackend> {
+  Map<String, dynamic>? data;
 
-  Future<void> _fetchMessage() async {
+  Future<void> fetchData() async {
+    final result = await ApiService.fetchData();
     setState(() {
-      _loading = true;
-      _message = '';
-    });
-    try {
-      final msg = await _apiService.fetchHello();
-      setState(() {
-        _message = msg;
-        _loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _message = 'Error:  ${e.toString()}';
-      });
-    } 
+      data = result;
+      }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flask + Flutter Demo')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: _loading ? null : _fetchMessage,
-              child: const Text('Fetch from Flask'),
-            ),
-            const SizedBox(height: 20),
-            if (_loading) const CircularProgressIndicator(),
-            if (_message.isNotEmpty) Text(_message),
-          ],
+    return Scaffold(appBar: AppBar(
+
+        backgroundColor: Color.fromARGB(255, 108, 33, 238),
+        title: Text(
+          "Data",
+          style: TextStyle(
+            color: Color.fromARGB(255, 255, 255, 255),
+          )
         ),
+
       ),
     );
   }
 }
-
