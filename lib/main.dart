@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'services/api_service.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    home: DataBackend(),
-  ));
+  runApp(const MaterialApp(home: DataBackend()));
 }
 
 class DataBackend extends StatefulWidget {
@@ -21,21 +19,23 @@ class _DataBackendState extends State<DataBackend> {
     final result = await ApiService.fetchData();
     setState(() {
       data = result;
-      }
-    );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(
-
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 108, 33, 238),
         title: Text(
-          "Data",
+          "DATA FROM API",
           style: TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
-          )
+            fontFamily: "Livvic",
+            fontWeight: FontWeight.bold,
+            ),
         ),
+        centerTitle: true,
       ),
     );
   }
