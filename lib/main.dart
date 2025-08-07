@@ -23,6 +23,11 @@ class _DataBackendState extends State<DataBackend> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,6 +41,13 @@ class _DataBackendState extends State<DataBackend> {
             ),
         ),
         centerTitle: true,
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text("${data?['name']}"),
+          ],
+        ),
       ),
     );
   }
