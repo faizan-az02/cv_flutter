@@ -1,18 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
+//import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   // Get the appropriate base URL based on platform
   static String baseUrl = 'http://192.168.100.9:5000';
 
-  Future<String> fetchHello() async {
-    final response = await http.get(Uri.parse('$baseUrl/api/hello'));
+  static Future<Map<String, dynamic>> fetchData() async {
+    final response = await http.get(Uri.parse('$baseUrl/data'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data['message'] ?? 'No message';
+      return data;
     } else {
-      throw Exception('Failed to load message');
+      throw Exception('Failed to load data');
     }
   }
 }
