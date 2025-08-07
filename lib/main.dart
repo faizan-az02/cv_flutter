@@ -36,7 +36,6 @@ class _DataBackendState extends State<DataBackend> {
             color: Color.fromARGB(255, 255, 255, 255),
           )
         ),
-
       ),
     );
   }
