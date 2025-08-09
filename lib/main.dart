@@ -17,26 +17,46 @@ class _DataBackendState extends State<DataBackend> {
   Map<String, dynamic>? data;
   bool isFirst = true;
   bool pressed = false;
+  String? buttonMessage;
+  bool gotData = false;
+  int code = -1;
 
   Future<void> fetchData() async {
+
     setState(() {
-      if (pressed == true) {
-        isFirst = false;
+
+      if (isFirst == false)
+      {
+        gotData = true;
       }
-      data = null;
+
+      isFirst = false;
       pressed = true;
+
     });
 
-    // Wait for 3 seconds
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 3));
 
-    // Fetch data from API
-    final result = await ApiService.fetchData();
+    ApiResponse result;
 
-    // Update state with new data
-    setState(() {
-      data = result;
-    });
+    result = await ApiService.fetchData();
+
+    if (result.statusCode != 200)
+    {
+      setState(() {
+        data = null;
+        pressed = false;
+        code = result.statusCode;
+      });
+    }
+    else
+    {
+      setState(() {
+        pressed = false;
+        data = result.body;
+        code = result.statusCode;
+      });
+    }
   }
 
   @override
@@ -56,42 +76,39 @@ class _DataBackendState extends State<DataBackend> {
         centerTitle: true,
       ),
 
-      body: SizedBox.expand(
+      body: pressed ? 
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            const SpinKitDancingSquare(
+              color: Colors.white,
+              size: 50.0,
+            ),
+
+            Text(
+              gotData ? "Refreshing Data" : "Getting Data",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontFamily: "Livvic",
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+          ],
+        )
+      :SizedBox.expand(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // ✅ center vertically
           children: [
-            if (data == null && !pressed)
-              Container(), // placeholder for first time
-
-            if (data == null && pressed)
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SpinKitFoldingCube(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    size: 50.0,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    isFirst ? 'Getting Data' : 'Refreshing Data',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Livvic',
-                    ),
-                  ),
-                ],
+            Text(data != null? 
+              "$data":
+              isFirst ? 
+              "Press Button to Fetch The Data":
+              "No Data Found",
               ),
-
-            if (data != null)
-              Column(
-                children: [
-                  Text("${data?['name']}"),
-                  Text("${data?['age']}"),
-                  Text("${data?['city']}"),
-                ],
-              ),
+              Text("Status Code: $code")
           ],
         ),
       ),
@@ -99,7 +116,7 @@ class _DataBackendState extends State<DataBackend> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: fetchData,
         icon: const Icon(Icons.get_app),
-        label: pressed ? const Text("Refresh Data") : const Text("Get Data"),
+        label: Text(isFirst ? "Get Data" : "Refresh Data"),
       ),
     );
   }
