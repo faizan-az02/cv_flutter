@@ -75,7 +75,12 @@ Returns a simple greeting message.
 - Error handling and user feedback
 
 ## History:
+-Everything I went through to get to the final CV, Flutter, Flask milestone.
 
 ### Initial Commit:
 - Simple Flutter Page
 - Flask API - Sending a json format message upon pressing the button, displaying it on screen. 
+
+### Second Phase:
+- Improved UI
+- Flask API - Gets data upon request, shows it on screen, handles edge cases i.e. API not running, timeouts etc. UI responds accordingly.
